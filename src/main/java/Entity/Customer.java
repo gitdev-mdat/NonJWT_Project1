@@ -1,0 +1,87 @@
+package Entity;
+
+import java.time.LocalDateTime;
+
+public class Customer {
+	private Long id;
+	private String fullName;
+	private String phone;
+	private String email;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
+	private String createdBy;
+	private String modifiedBy;
+	public Customer(String fullName, String phone, String email, LocalDateTime createdDate, LocalDateTime modifiedDate,
+			String createdBy, String modifiedBy) {
+		super();
+		this.fullName = fullName;
+		this.phone = phone;
+		this.email = email;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.createdBy = createdBy;
+		this.modifiedBy = modifiedBy;
+	}
+	public Customer(Long id, String fullName, String phone, String email, LocalDateTime createdDate,
+			LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+		super();
+		this.id = id;
+		this.fullName = fullName;
+		this.phone = phone;
+		this.email = email;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.createdBy = createdBy;
+		this.modifiedBy = modifiedBy;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+	public LocalDateTime getModifiedDate() {
+		return modifiedDate;
+	}
+	public void setModifiedDate(LocalDateTime modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	
+	
+}
