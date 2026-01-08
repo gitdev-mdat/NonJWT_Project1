@@ -36,6 +36,7 @@ public class Building {
 	private String modifiedBy;
 	private String managerName;
 	private String managerPhoneNumber;
+	public Building() {};
 	public Building(String name, String street, String ward, Long districtId, String structure,
 			Integer numberOfBasement, Integer floorArea, String direction, String level, Integer rentPrice,
 			String rentPriceDescription, String serviceFee, String carFee, String motorbikeFee, String overTimeFee,
