@@ -11,17 +11,17 @@ public class BuildingDTORequest {
 	Integer numberOfBasement;
 	String direction;
 	String level;
-	Integer areaF; // chưa biết lấy ở đâu
+	Integer areaF; // entity rentarea
 	Integer areaT; // ______
 	Integer rentPriceF; // entity Building
 	Integer rentPriceT; // ___
 	String managerName; // entity User
 	String managerPhone; // ____
-	Long staffId; // entity User
-	List<String> rentType; // entity RentType
+	Long staffId; // entity assignmentbuilding
+	List<Integer> rentType; // entity RentType, entity buildingrenttype
 	public BuildingDTORequest(String buildingName, String ward, Long districtId, String street, Integer floorArea,
 			Integer numberOfBasement, String direction, String level, Integer areaF, Integer areaT, Integer rentPriceF,
-			Integer rentPriceT, String managerName, String managerPhone, Long staffId, List<String> rentType) {
+			Integer rentPriceT, String managerName, String managerPhone, Long staffId, List<Integer> rentType) {
 		super();
 		this.buildingName = buildingName;
 		this.ward = ward;
@@ -130,10 +130,10 @@ public class BuildingDTORequest {
 	public void setStaffId(Long staffId) {
 		this.staffId = staffId;
 	}
-	public List<String> getRentType() {
+	public List<Integer> getRentType() {
 		return rentType;
 	}
-	public void setRentType(List<String> rentType) {
+	public void setRentType(List<Integer> rentType) {
 		this.rentType = rentType;
 	}
 	

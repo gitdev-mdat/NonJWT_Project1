@@ -11,7 +11,7 @@ public class BuildingDTOResponse {
 	String managerPhone;
 	Integer floorArea;
 	List<Integer> rentArea;
-	Integer emptyArea;
+	Integer emptyArea; // chưa biết lấy ở đâu
 	Integer rentPrice;
 	String serviceFee;
 	BigDecimal brokerageFee;
