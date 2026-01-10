@@ -1,7 +1,6 @@
 package Repository.Interface;
 
 import Entity.District;
-
 import Entity.*;
 
 public interface DistrictRepo {

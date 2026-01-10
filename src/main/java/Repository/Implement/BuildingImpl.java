@@ -19,82 +19,8 @@ public class BuildingImpl implements BuildingRepo {
 
 	    StringBuilder sql = new StringBuilder("SELECT DISTINCT b.* FROM building b ");
 	    StringBuilder where = new StringBuilder(" WHERE 1=1 ");
-
-	    if (building.getAreaF() != null || building.getAreaT() != null) {
-	        sql.append(" INNER JOIN rentarea ra ON ra.buildingid = b.id ");
-	    }
-	    if (building.getStaffId() != null) {
-	        sql.append(" INNER JOIN assignmentbuilding ab ON ab.buildingid = b.id ");
-	    }
-
-	    if (building.getRentType() != null && !building.getRentType().isEmpty()) {
-	        sql.append(" INNER JOIN buildingrenttype brt ON brt.buildingid = b.id ");
-	    }
-	    if (building.getBuildingName() != null && !building.getBuildingName().isBlank()) {
-	        where.append(" AND b.buildingname LIKE ? ");
-	    }
-	    if (building.getWard() != null && !building.getWard().isBlank()) {
-	        where.append(" AND b.ward LIKE ? ");
-	    }
-	    if (building.getDistrictId() != null) {
-	        where.append(" AND b.districtid = ? ");
-	    }
-	    if (building.getStreet() != null && !building.getStreet().isBlank()) {
-	        where.append(" AND b.street LIKE ? ");
-	    }
-	    if (building.getFloorArea() != null) {
-	        where.append(" AND b.floorarea = ? ");
-	    }
-	    if (building.getNumberOfBasement() != null) {
-	        where.append(" AND b.numberofbasement = ? ");
-	    }
-	    if (building.getDirection() != null && !building.getDirection().isBlank()) {
-	        where.append(" AND b.direction LIKE ? ");
-	    }
-	    if (building.getLevel() != null && !building.getLevel().isBlank()) {
-	        where.append(" AND b.level LIKE ? ");
-	    }
-
-	    if (building.getAreaF() != null) {
-	        where.append(" AND ra.value >= ? ");
-	    }
-	    if (building.getAreaT() != null) {
-	        where.append(" AND ra.value <= ? ");
-	    }
-
-	    if (building.getRentPriceF() != null) {
-	        where.append(" AND b.rentprice >= ? ");
-	    }
-	    if (building.getRentPriceT() != null) {
-	        where.append(" AND b.rentprice <= ? ");
-	    }
-
-	    if (building.getManagerName() != null && !building.getManagerName().isBlank()) {
-	        where.append(" AND b.managername LIKE ? ");
-	    }
-	    if (building.getManagerPhone() != null && !building.getManagerPhone().isBlank()) {
-	        where.append(" AND b.managerphone LIKE ? ");
-	    }
-	    if (building.getStaffId() != null) {
-	    	where.append(" AND ab.staffId = ?");
-	    }
-	    if (building.getRentType() != null) {
-	    	where.append(" AND brt.renttypeid = ?");
-	    }
-	    if (building.getStaffId() != null) {
-            where.append(" AND ab.staffid = ? ");
-        }
-        // đoạn này e có tham khảo
-        if (building.getRentType() != null && !building.getRentType().isEmpty()) {
-            where.append(" AND brt.renttypeid IN (");
-            for (int i = 0; i < building.getRentType().size(); i++) {
-                where.append("?");
-                if (i < building.getRentType().size() - 1) {
-                    where.append(",");
-                }
-            }
-            where.append(") ");
-        }
+	    sql = JoinFunction(building,sql);
+	    where = WhereFunction(building,where);
 	    sql.append(where);
 
 	    List<Building> result = new ArrayList<>();
@@ -153,8 +79,8 @@ public class BuildingImpl implements BuildingRepo {
             }
 
             if (building.getRentType() != null && !building.getRentType().isEmpty()) {
-                for (Integer rentTypeId : building.getRentType()) {
-                    stm.setInt(index++, rentTypeId);
+                for (String rentTypeCode : building.getRentType()) {
+                    stm.setString(index++, rentTypeCode);
                 }
             }
 	        // ----------------------
@@ -182,5 +108,80 @@ public class BuildingImpl implements BuildingRepo {
 
 	    return result;
 	}
+	private StringBuilder JoinFunction(BuildingDTORequest building,StringBuilder join) {
+		  if (building.getAreaF() != null || building.getAreaT() != null) {
+		        join.append(" INNER JOIN rentarea ra ON ra.buildingid = b.id ");
+		    }
+		    if (building.getStaffId() != null) {
+		        join.append(" INNER JOIN assignmentbuilding ab ON ab.buildingid = b.id ");
+		    }
 
+		    if (building.getRentType() != null && !building.getRentType().isEmpty()) {
+		        join.append(" INNER JOIN buildingrenttype brt ON brt.buildingid = b.id ");
+		        join.append(" INNER JOIN renttype rt ON rt.id = brt.renttypeid");
+		    }
+		return join;
+	}
+	private StringBuilder WhereFunction(BuildingDTORequest building, StringBuilder where) {
+		if (building.getBuildingName() != null && !building.getBuildingName().isBlank()) {
+	        where.append(" AND b.buildingname LIKE ? ");
+	    }
+	    if (building.getWard() != null && !building.getWard().isBlank()) {
+	        where.append(" AND b.ward LIKE ? ");
+	    }
+	    if (building.getDistrictId() != null) {
+	        where.append(" AND b.districtid = ? ");
+	    }
+	    if (building.getStreet() != null && !building.getStreet().isBlank()) {
+	        where.append(" AND b.street LIKE ? ");
+	    }
+	    if (building.getFloorArea() != null) {
+	        where.append(" AND b.floorarea = ? ");
+	    }
+	    if (building.getNumberOfBasement() != null) {
+	        where.append(" AND b.numberofbasement = ? ");
+	    }
+	    if (building.getDirection() != null && !building.getDirection().isBlank()) {
+	        where.append(" AND b.direction LIKE ? ");
+	    }
+	    if (building.getLevel() != null && !building.getLevel().isBlank()) {
+	        where.append(" AND b.level LIKE ? ");
+	    }
+
+	    if (building.getAreaF() != null) {
+	        where.append(" AND ra.value >= ? ");
+	    }
+	    if (building.getAreaT() != null) {
+	        where.append(" AND ra.value <= ? ");
+	    }
+
+	    if (building.getRentPriceF() != null) {
+	        where.append(" AND b.rentprice >= ? ");
+	    }
+	    if (building.getRentPriceT() != null) {
+	        where.append(" AND b.rentprice <= ? ");
+	    }
+
+	    if (building.getManagerName() != null && !building.getManagerName().isBlank()) {
+	        where.append(" AND b.managername LIKE ? ");
+	    }
+	    if (building.getManagerPhone() != null && !building.getManagerPhone().isBlank()) {
+	        where.append(" AND b.managerphone LIKE ? ");
+	    }
+	   	if (building.getStaffId() != null) {
+            where.append(" AND ab.staffid = ? ");
+        }
+        // đoạn này e có tham khảo
+        if (building.getRentType() != null && !building.getRentType().isEmpty()) {
+            where.append(" AND rt.code IN (");
+            for (int i = 0; i < building.getRentType().size(); i++) {
+                where.append("?");
+                if (i < building.getRentType().size() - 1) {
+                    where.append(",");
+                }
+            }
+            where.append(") ");
+        }
+        return where;
+	}
 }

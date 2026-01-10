@@ -10,7 +10,7 @@ public class BuildingDTOResponse {
 	String managerName;
 	String managerPhone;
 	Integer floorArea;
-	List<Integer> rentArea;
+	String rentArea;
 	Integer emptyArea; // chưa biết lấy ở đâu
 	Integer rentPrice;
 	String serviceFee;
@@ -51,10 +51,10 @@ public class BuildingDTOResponse {
 	public void setFloorArea(Integer floorArea) {
 		this.floorArea = floorArea;
 	}
-	public List<Integer> getRentArea() {
+	public String getRentArea() {
 		return rentArea;
 	}
-	public void setRentArea(List<Integer> rentArea) {
+	public void setRentArea(String rentArea) {
 		this.rentArea = rentArea;
 	}
 	public Integer getEmptyArea() {

@@ -18,10 +18,11 @@ public class BuildingDTORequest {
 	String managerName; // entity User
 	String managerPhone; // ____
 	Long staffId; // entity assignmentbuilding
-	List<Integer> rentType; // entity RentType, entity buildingrenttype
+	List<String> rentType; // entity RentType, entity buildingrenttype
+	public BuildingDTORequest() {}
 	public BuildingDTORequest(String buildingName, String ward, Long districtId, String street, Integer floorArea,
 			Integer numberOfBasement, String direction, String level, Integer areaF, Integer areaT, Integer rentPriceF,
-			Integer rentPriceT, String managerName, String managerPhone, Long staffId, List<Integer> rentType) {
+			Integer rentPriceT, String managerName, String managerPhone, Long staffId, List<String> rentType) {
 		super();
 		this.buildingName = buildingName;
 		this.ward = ward;
@@ -130,10 +131,10 @@ public class BuildingDTORequest {
 	public void setStaffId(Long staffId) {
 		this.staffId = staffId;
 	}
-	public List<Integer> getRentType() {
+	public List<String> getRentType() {
 		return rentType;
 	}
-	public void setRentType(List<Integer> rentType) {
+	public void setRentType(List<String	> rentType) {
 		this.rentType = rentType;
 	}
 	

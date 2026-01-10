@@ -1,7 +1,7 @@
 package Repository.Interface;
 
 import java.util.List;
-
+import Entity.*;
 public interface RentAreaRepo {
-	List<Integer> getRentAreasByBuildingId(Long buildingId);
+	List<RentArea> getRentAreasByBuildingId(Long buildingId);
 }

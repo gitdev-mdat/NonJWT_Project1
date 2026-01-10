@@ -78,5 +78,4 @@ public class RentArea {
 	public void setModifiedDate(LocalDateTime modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-	
 }

@@ -12,14 +12,46 @@ import DTO.Response.BuildingDTOResponse;
 import DTO.Request.*;
 import Entity.Building;
 import Entity.District;
+import Entity.RentArea;
 import Repository.Implement.*;
 import Repository.Interface.*;
-
-public class BuildingService {	
+import java.util.Map;
+public class BuildingService implements IBuildingService {	
 	private final BuildingRepo buildingRepo = new BuildingImpl();
 	private final DistrictRepo districtRepo = new DistrictImpl();
 	private final RentAreaRepo rentAreaRepo = new RentAreaImpl();
-	public List<BuildingDTOResponse> search(BuildingDTORequest building) {
+	public List<BuildingDTOResponse> search(Map<String,String> params) {
+		// handle params
+		BuildingDTORequest building = new BuildingDTORequest();
+
+	    building.setBuildingName(params.get("buildingName"));
+	    building.setWard(params.get("ward"));
+	    building.setStreet(params.get("street"));
+
+	    if (params.get("districtId") != null) {
+	        building.setDistrictId(Long.parseLong(params.get("districtId")));
+	    }
+
+	    if (params.get("areaF") != null) {
+	        building.setAreaF(Integer.parseInt(params.get("areaF")));
+	    }
+
+	    if (params.get("areaT") != null) {
+	        building.setAreaT(Integer.parseInt(params.get("areaT")));
+	    }
+
+	    if (params.get("rentPriceF") != null) {
+	        building.setRentPriceF(Integer.parseInt(params.get("rentPriceF")));
+	    }
+
+	    if (params.get("rentPriceT") != null) {
+	        building.setRentPriceT(Integer.parseInt(params.get("rentPriceT")));
+	    }
+
+	    if (params.get("staffId") != null) {
+	        building.setStaffId(Long.parseLong(params.get("staffId")));
+	    }
+		//-----
 		List<Building> b = buildingRepo.search(building);
 		List<BuildingDTOResponse> result = new ArrayList<>();
 		for (Building item : b) {
@@ -50,12 +82,21 @@ public class BuildingService {
 			dto.setServiceFee(item.getServiceFee());
 			dto.setBrokerageFee(item.getBrokerageFee());
 			
-			List<Integer> rentAreas = rentAreaRepo.getRentAreasByBuildingId(item.getId());
-			dto.setRentArea(rentAreas);
+			List<RentArea> rentAreas = rentAreaRepo.getRentAreasByBuildingId(item.getId());
+			ArrayList<Integer> rent = new ArrayList<>();
+			for (RentArea r : rentAreas) {
+				rent.add(r.getValue());
+			}
+			dto.setRentArea(rent.toString());
 			
 			if (item.getFloorArea() != null && rentAreas != null && !rentAreas.isEmpty()) {
-				int totalRentArea = rentAreas.stream().mapToInt(Integer::intValue).sum();
-				dto.setEmptyArea(item.getFloorArea() - totalRentArea);
+
+			    int totalRentArea = rentAreas.stream()
+			                                 .mapToInt(RentArea::getValue)
+			                                 .sum();
+
+			    int emptyArea = item.getFloorArea() - totalRentArea;
+			    dto.setEmptyArea(Math.max(emptyArea, 0));
 			}
 			
 			result.add(dto);
