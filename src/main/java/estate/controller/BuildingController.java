@@ -6,13 +6,15 @@ import estate.service.BuildingService;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BuildingController {
-	private BuildingService buildingService = new BuildingService();
+	@Autowired
+	private BuildingService buildingService;
 	@PostMapping("/api/search")
 	public List<BuildingDTOResponse> searchBuilding(@RequestParam Map<String,String> params, @RequestParam(value="typeCode",required = false) List<String>typeCodes) {
 		List<BuildingDTOResponse> building = buildingService.search(params,typeCodes);

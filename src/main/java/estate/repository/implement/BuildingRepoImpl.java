@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import estate.dto.request.BuildingDTORequest;
 import estate.entity.Building;
 import estate.repository.interf.BuildingRepo;
-
+import estate.util.ConnectionJDBC;
+@Repository
 public class BuildingRepoImpl implements BuildingRepo {
-	private static final String USER = "root";
-	private static final String PASSWORD = "12345";
-	private static final String URL = "jdbc:mysql://localhost:3306/estatebasic";
 	@Override
 	public List<Building> search(BuildingDTORequest building) {
 
@@ -26,7 +26,7 @@ public class BuildingRepoImpl implements BuildingRepo {
 	    List<Building> result = new ArrayList<>();
 
 	    try (
-	        Connection cnn = DriverManager.getConnection(URL, USER, PASSWORD);
+	        Connection cnn = ConnectionJDBC.getConnection();
 	        PreparedStatement stm = cnn.prepareStatement(sql.toString());
 	    ) {
 
@@ -173,7 +173,7 @@ public class BuildingRepoImpl implements BuildingRepo {
 	   	if (building.getStaffId() != null) {
             where.append(" AND ab.staffid = ? ");
         }
-        // đoạn này e có tham khảo
+ 
         if (building.getRentType() != null && !building.getRentType().isEmpty()) {
             where.append(" AND rt.code IN (");
             for (int i = 0; i < building.getRentType().size(); i++) {

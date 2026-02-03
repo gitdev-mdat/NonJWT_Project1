@@ -2,12 +2,14 @@
 
 import java.sql.Connection;
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import estate.convertor.BuildingConvertor;
 import estate.dto.request.BuildingDTORequest;
 import estate.dto.response.BuildingDTOResponse;
 import estate.entity.Building;
@@ -19,12 +21,18 @@ import estate.repository.implement.RentAreaRepoImpl;
 import estate.repository.interf.BuildingRepo;
 import estate.repository.interf.DistrictRepo;
 import estate.repository.interf.RentAreaRepo;
+import estate.util.Validation;
 
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+@Service
 public class BuildingService implements IBuildingService {	
-	private final BuildingRepo buildingRepo = new BuildingRepoImpl();
-	private final DistrictRepo districtRepo = new DistrictRepoImpl();
-	private final RentAreaRepo rentAreaRepo = new RentAreaRepoImpl();
+	@Autowired
+	private BuildingRepo buildingRepo;
+	@Autowired
+	private BuildingConvertor buildingConvertor;
 	public List<BuildingDTOResponse> search(Map<String,String> params, List<String> typeCodes) {
 		// handle params
 		BuildingDTORequest building = new BuildingDTORequest();	
@@ -33,37 +41,37 @@ public class BuildingService implements IBuildingService {
 	    building.setWard(params.get("ward"));
 	    building.setStreet(params.get("street"));
 
-	    if (params.get("districtId") != null) {
+	    if (Validation.isValid(params.get("districtId"))) {
 	        building.setDistrictId(Long.parseLong(params.get("districtId")));
 	    }
 
-	    if (params.get("areaF") != null) {
+	    if (Validation.isValid(params.get("areaF"))) {
 	        building.setAreaF(Integer.parseInt(params.get("areaF")));
 	    }
 
-	    if (params.get("areaT") != null) {
+	    if (Validation.isValid(params.get("areaT"))) {
 	        building.setAreaT(Integer.parseInt(params.get("areaT")));
 	    }
 
-	    if (params.get("rentPriceF") != null) {
+	    if (Validation.isValid(params.get("rentPriceF"))) {
 	        building.setRentPriceF(Integer.parseInt(params.get("rentPriceF")));
 	        System.out.println("RentPriceF: " + building.getRentPriceF());
 	    }
 
-	    if (params.get("rentPriceT") != null) {
+	    if (Validation.isValid(params.get("rentPriceT"))) {
 	        building.setRentPriceT(Integer.parseInt(params.get("rentPriceT")));
 	    }
 
-	    if (params.get("staffId") != null) {
+	    if (Validation.isValid(params.get("staffId"))) {
 	        building.setStaffId(Long.parseLong(params.get("staffId")));
 	    }
-	    if (params.get("managerName") != null) {
+	    if (Validation.isValid(params.get("managerName"))) {
 	    	building.setManagerName(params.get("managerName"));
 	    }
-	    if (params.get("managerPhone") != null) {
+	    if (Validation.isValid(params.get("managerPhone"))) {
 	    	building.setManagerPhone(params.get("managerPhone"));
 	    }
-	    if (params.get("staffId") != null) {
+	    if (Validation.isValid(params.get("staffId"))) {
 	    	building.setStaffId(Long.parseLong(params.get("staffId")));
 	    }
 	    if (typeCodes != null) {
@@ -73,50 +81,8 @@ public class BuildingService implements IBuildingService {
 		List<Building> b = buildingRepo.search(building);
 		List<BuildingDTOResponse> result = new ArrayList<>();
 		for (Building item : b) {
-			BuildingDTOResponse dto = new BuildingDTOResponse();
-			
-			dto.setBuildingName(item.getName());
-			
-			District district = districtRepo.findDistrictById(item.getDistrictId());
-			StringBuilder address = new StringBuilder();
-			if (item.getStreet() != null) {
-				address.append(item.getStreet());
-			}
-			if (item.getWard() != null) {
-				if (address.length() > 0) address.append(", ");
-				address.append(item.getWard());
-			}
-			if (district != null && district.getName() != null) {
-				if (address.length() > 0) address.append(", ");
-				address.append(district.getName());
-			}
-			dto.setAddress(address.toString());
-			
-			dto.setNumberOfBasement(item.getNumberOfBasement());
-			dto.setManagerName(item.getManagerName());
-			dto.setManagerPhone(item.getManagerPhoneNumber());
-			dto.setFloorArea(item.getFloorArea());
-			dto.setRentPrice(item.getRentPrice());
-			dto.setServiceFee(item.getServiceFee());
-			dto.setBrokerageFee(item.getBrokerageFee());
-			
-			List<RentArea> rentAreas = rentAreaRepo.getRentAreasByBuildingId(item.getId());
-			ArrayList<Integer> rent = new ArrayList<>();
-			for (RentArea r : rentAreas) {
-				rent.add(r.getValue());
-			}
-			dto.setRentArea(rent.toString());
-			
-			if (item.getFloorArea() != null && rentAreas != null && !rentAreas.isEmpty()) {
-
-			    int totalRentArea = rentAreas.stream()
-			                                 .mapToInt(RentArea::getValue)
-			                                 .sum();
-
-			    int emptyArea = item.getFloorArea() - totalRentArea;
-			    dto.setEmptyArea(Math.max(emptyArea, 0));
-			}
-			
+		
+			BuildingDTOResponse dto= buildingConvertor.convert(item);
 			result.add(dto);
 		}
 		return result;
