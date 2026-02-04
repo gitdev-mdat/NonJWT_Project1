@@ -168,7 +168,7 @@ public class BuildingRepoImpl implements BuildingRepo {
 	        where.append(" AND b.managername LIKE ? ");
 	    }
 	    if (building.getManagerPhone() != null && !building.getManagerPhone().isBlank()) {
-	        where.append(" AND b.managerphone LIKE ? ");
+	        where.append(" AND b.managerphonenumber LIKE ? ");
 	    }
 	   	if (building.getStaffId() != null) {
             where.append(" AND ab.staffid = ? ");
