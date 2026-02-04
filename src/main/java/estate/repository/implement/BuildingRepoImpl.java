@@ -1,6 +1,5 @@
 package estate.repository.implement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -168,7 +167,7 @@ public class BuildingRepoImpl implements BuildingRepo {
 	        where.append(" AND b.managername LIKE ? ");
 	    }
 	    if (builder.getManagerPhone() != null && !builder.getManagerPhone().isBlank()) {
-	        where.append(" AND b.managerphone LIKE ? ");
+	        where.append(" AND b.managerphonenumber LIKE ? ");
 	    }
 	   	if (builder.getStaffId() != null) {
             where.append(" AND ab.staffid = ? ");

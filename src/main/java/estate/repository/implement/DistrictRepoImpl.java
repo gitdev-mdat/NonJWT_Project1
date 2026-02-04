@@ -1,7 +1,6 @@
 package estate.repository.implement;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import org.springframework.stereotype.Repository;

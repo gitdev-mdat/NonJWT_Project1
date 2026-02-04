@@ -1,11 +1,6 @@
  package estate.service;
 
-import java.sql.Connection;
 
-
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +9,9 @@ import estate.convertor.BuildingConvertor;
 import estate.dto.request.BuildingDTORequest;
 import estate.dto.response.BuildingDTOResponse;
 import estate.entity.Building;
-import estate.entity.District;
-import estate.entity.RentArea;
-import estate.repository.implement.BuildingRepoImpl;
-import estate.repository.implement.DistrictRepoImpl;
-import estate.repository.implement.RentAreaRepoImpl;
+
 import estate.repository.interf.BuildingRepo;
-import estate.repository.interf.DistrictRepo;
-import estate.repository.interf.RentAreaRepo;
+
 import estate.util.Validation;
 
 import java.util.Map;
