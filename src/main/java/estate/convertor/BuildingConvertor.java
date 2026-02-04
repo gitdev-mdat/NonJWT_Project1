@@ -28,7 +28,7 @@ public class BuildingConvertor {
 	private ModelMapper modelMapper;
 	public BuildingDTOResponse convertToResponseDTO(Building item) {
 		BuildingDTOResponse dto = modelMapper.map(item,BuildingDTOResponse.class);
-		District district = districtRepo.findDistrictById(item.getDistrictId());
+		District district = districtRepo.findDistrictById(item.getDistrict().getId());
 		StringBuilder address = new StringBuilder();
 		if (item.getStreet() != null) {
 			address.append(item.getStreet());

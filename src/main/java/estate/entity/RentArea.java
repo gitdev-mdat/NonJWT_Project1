@@ -1,5 +1,14 @@
 package estate.entity;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 @Getter
@@ -7,13 +16,29 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name="rentarea")
 public class RentArea {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 Long id;
-	 Long buildingId;
-	 Integer value;
-	 String createdBy;
-	 LocalDateTime createdDate;
-	 String modifiedBy;
-	 LocalDateTime modifiedDate;
 	
+	@ManyToOne
+	@JoinColumn(name="buildingid")
+	Building building;
+	
+	@Column
+	Integer value;
+	
+	@Column(name="createdby")
+	String createdBy;
+	
+	@Column(name="createddate")
+	LocalDateTime createdDate;
+	
+	@Column(name="modifiedby")
+	String modifiedBy;
+	
+	@Column(name="modifieddate")
+	LocalDateTime modifiedDate;
 }
