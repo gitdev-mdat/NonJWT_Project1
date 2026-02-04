@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import estate.builder.BuildingSearchBuilder;
 import estate.dto.request.BuildingDTORequest;
 import estate.dto.response.BuildingDTOResponse;
 import estate.entity.Building;
@@ -25,7 +26,7 @@ public class BuildingConvertor {
 	private RentAreaRepo rentAreaRepo;
 	@Autowired
 	private ModelMapper modelMapper;
-	public BuildingDTOResponse convert(Building item) {
+	public BuildingDTOResponse convertToResponseDTO(Building item) {
 		BuildingDTOResponse dto = modelMapper.map(item,BuildingDTOResponse.class);
 		District district = districtRepo.findDistrictById(item.getDistrictId());
 		StringBuilder address = new StringBuilder();
@@ -59,5 +60,27 @@ public class BuildingConvertor {
 		    dto.setEmptyArea(Math.max(emptyArea, 0));
 		}
 		return dto;
+	}
+	
+	public BuildingSearchBuilder convertToBuilder(BuildingDTORequest dto) {
+		BuildingSearchBuilder builder = new BuildingSearchBuilder.Builder()
+																.buildingName(dto.getBuildingName())
+																.areaF(dto.getAreaF())
+																.areaT(dto.getAreaT())
+																.direction(dto.getDirection())
+																.districtId(dto.getDistrictId())
+																.floorArea(dto.getFloorArea())
+																.level(dto.getLevel())
+																.managerName(dto.getManagerName())
+																.managerPhone(dto.getManagerPhone())
+																.rentPriceF(dto.getRentPriceF())
+																.rentPriceT(dto.getRentPriceT())
+																.rentTypes(dto.getRentTypes())
+																.numberOfBasement(dto.getNumberOfBasement())
+																.staffId(dto.getStaffId())
+																.street(dto.getStreet())
+																.ward(dto.getWard())
+																.build();
+		return builder;
 	}
 }

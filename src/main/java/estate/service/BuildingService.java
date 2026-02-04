@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import estate.builder.BuildingSearchBuilder;
 import estate.convertor.BuildingConvertor;
 import estate.dto.request.BuildingDTORequest;
 import estate.dto.response.BuildingDTOResponse;
@@ -75,14 +76,15 @@ public class BuildingService implements IBuildingService {
 	    	building.setStaffId(Long.parseLong(params.get("staffId")));
 	    }
 	    if (typeCodes != null) {
-	    	building.setRentType(typeCodes);
+	    	building.setRentTypes(typeCodes);
 	    }
-		//-----
-		List<Building> b = buildingRepo.search(building);
+		
+	    BuildingSearchBuilder builder = buildingConvertor.convertToBuilder(building);
+		List<Building> b = buildingRepo.search(builder);
 		List<BuildingDTOResponse> result = new ArrayList<>();
 		for (Building item : b) {
 		
-			BuildingDTOResponse dto= buildingConvertor.convert(item);
+			BuildingDTOResponse dto= buildingConvertor.convertToResponseDTO(item);
 			result.add(dto);
 		}
 		return result;

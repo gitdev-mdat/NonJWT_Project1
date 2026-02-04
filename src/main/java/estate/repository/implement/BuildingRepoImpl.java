@@ -8,19 +8,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import estate.dto.request.BuildingDTORequest;
+import estate.builder.BuildingSearchBuilder;
 import estate.entity.Building;
 import estate.repository.interf.BuildingRepo;
 import estate.util.ConnectionJDBC;
 @Repository
 public class BuildingRepoImpl implements BuildingRepo {
 	@Override
-	public List<Building> search(BuildingDTORequest building) {
+	public List<Building> search(BuildingSearchBuilder builder) {
 
 	    StringBuilder sql = new StringBuilder("SELECT DISTINCT b.* FROM building b ");
 	    StringBuilder where = new StringBuilder(" WHERE 1=1 ");
-	    sql = JoinFunction(building,sql);
-	    where = WhereFunction(building,where);
+	    sql = JoinFunction(builder,sql);
+	    where = WhereFunction(builder,where);
 	    sql.append(where);
 
 	    List<Building> result = new ArrayList<>();
@@ -32,54 +32,54 @@ public class BuildingRepoImpl implements BuildingRepo {
 
 	        int index = 1;
 
-	        if (building.getBuildingName() != null && !building.getBuildingName().isBlank()) {
-	            stm.setString(index++, "%" + building.getBuildingName() + "%");
+	        if (builder.getBuildingName() != null && !builder.getBuildingName().isBlank()) {
+	            stm.setString(index++, "%" + builder.getBuildingName() + "%");
 	        }
-	        if (building.getWard() != null && !building.getWard().isBlank()) {
-	            stm.setString(index++, "%" + building.getWard() + "%");
+	        if (builder.getWard() != null && !builder.getWard().isBlank()) {
+	            stm.setString(index++, "%" + builder.getWard() + "%");
 	        }
-	        if (building.getDistrictId() != null) {
-	            stm.setLong(index++, building.getDistrictId());
+	        if (builder.getDistrictId() != null) {
+	            stm.setLong(index++, builder.getDistrictId());
 	        }
-	        if (building.getStreet() != null && !building.getStreet().isBlank()) {
-	            stm.setString(index++, "%" + building.getStreet() + "%");
+	        if (builder.getStreet() != null && !builder.getStreet().isBlank()) {
+	            stm.setString(index++, "%" + builder.getStreet() + "%");
 	        }
-	        if (building.getFloorArea() != null) {
-	            stm.setInt(index++, building.getFloorArea());
+	        if (builder.getFloorArea() != null) {
+	            stm.setInt(index++, builder.getFloorArea());
 	        }
-	        if (building.getNumberOfBasement() != null) {
-	            stm.setInt(index++, building.getNumberOfBasement());
+	        if (builder.getNumberOfBasement() != null) {
+	            stm.setInt(index++, builder.getNumberOfBasement());
 	        }
-	        if (building.getDirection() != null && !building.getDirection().isBlank()) {
-	            stm.setString(index++, "%" + building.getDirection() + "%");
+	        if (builder.getDirection() != null && !builder.getDirection().isBlank()) {
+	            stm.setString(index++, "%" + builder.getDirection() + "%");
 	        }
-	        if (building.getLevel() != null && !building.getLevel().isBlank()) {
-	            stm.setString(index++, "%" + building.getLevel() + "%");
+	        if (builder.getLevel() != null && !builder.getLevel().isBlank()) {
+	            stm.setString(index++, "%" + builder.getLevel() + "%");
 	        }
-	        if (building.getAreaF() != null) {
-	            stm.setInt(index++, building.getAreaF());
+	        if (builder.getAreaF() != null) {
+	            stm.setInt(index++, builder.getAreaF());
 	        }
-	        if (building.getAreaT() != null) {
-	            stm.setInt(index++, building.getAreaT());
+	        if (builder.getAreaT() != null) {
+	            stm.setInt(index++, builder.getAreaT());
 	        }
-	        if (building.getRentPriceF() != null) {
-	            stm.setInt(index++, building.getRentPriceF());
+	        if (builder.getRentPriceF() != null) {
+	            stm.setInt(index++, builder.getRentPriceF());
 	        }
-	        if (building.getRentPriceT() != null) {
-	            stm.setInt(index++, building.getRentPriceT());
+	        if (builder.getRentPriceT() != null) {
+	            stm.setInt(index++, builder.getRentPriceT());
 	        }
-	        if (building.getManagerName() != null && !building.getManagerName().isBlank()) {
-	            stm.setString(index++, "%" + building.getManagerName() + "%");
+	        if (builder.getManagerName() != null && !builder.getManagerName().isBlank()) {
+	            stm.setString(index++, "%" + builder.getManagerName() + "%");
 	        }
-	        if (building.getManagerPhone() != null && !building.getManagerPhone().isBlank()) {
-	            stm.setString(index++, "%" + building.getManagerPhone() + "%");
+	        if (builder.getManagerPhone() != null && !builder.getManagerPhone().isBlank()) {
+	            stm.setString(index++, "%" + builder.getManagerPhone() + "%");
 	        }
-	        if (building.getStaffId() != null) {
-                stm.setLong(index++, building.getStaffId());
+	        if (builder.getStaffId() != null) {
+                stm.setLong(index++, builder.getStaffId());
             }
 
-            if (building.getRentType() != null && !building.getRentType().isEmpty()) {
-                for (String rentTypeCode : building.getRentType()) {
+            if (builder.getRentTypes() != null && !builder.getRentTypes().isEmpty()) {
+                for (String rentTypeCode : builder.getRentTypes()) {
                     stm.setString(index++, rentTypeCode);
                 }
             }
@@ -110,75 +110,75 @@ public class BuildingRepoImpl implements BuildingRepo {
 
 	    return result;
 	}
-	private StringBuilder JoinFunction(BuildingDTORequest building,StringBuilder join) {
-		  if (building.getAreaF() != null || building.getAreaT() != null) {
+	private StringBuilder JoinFunction(BuildingSearchBuilder builder,StringBuilder join) {
+		  if (builder.getAreaF() != null || builder.getAreaT() != null) {
 		        join.append(" INNER JOIN rentarea ra ON ra.buildingid = b.id ");
 		    }
-		    if (building.getStaffId() != null) {
-		        join.append(" INNER JOIN assignmentbuilding ab ON ab.buildingid = b.id ");
+		    if (builder.getStaffId() != null) {
+		        join.append(" INNER JOIN assignmentbuilder ab ON ab.buildingid = b.id ");
 		    }
 
-		    if (building.getRentType() != null && !building.getRentType().isEmpty()) {
+		    if (builder.getRentTypes() != null && !builder.getRentTypes().isEmpty()) {
 		        join.append(" INNER JOIN buildingrenttype brt ON brt.buildingid = b.id ");
 		        join.append(" INNER JOIN renttype rt ON rt.id = brt.renttypeid");
 		    }
 		return join;
 	}
-	private StringBuilder WhereFunction(BuildingDTORequest building, StringBuilder where) {
-		if (building.getBuildingName() != null && !building.getBuildingName().isBlank()) {
+	private StringBuilder WhereFunction(BuildingSearchBuilder builder, StringBuilder where) {
+		if (builder.getBuildingName() != null && !builder.getBuildingName().isBlank()) {
 	        where.append(" AND b.name LIKE ? ");
 	    }
-	    if (building.getWard() != null && !building.getWard().isBlank()) {
+	    if (builder.getWard() != null && !builder.getWard().isBlank()) {
 	        where.append(" AND b.ward LIKE ? ");
 	    }
-	    if (building.getDistrictId() != null) {
+	    if (builder.getDistrictId() != null) {
 	        where.append(" AND b.districtid = ? ");
 	    }
-	    if (building.getStreet() != null && !building.getStreet().isBlank()) {
+	    if (builder.getStreet() != null && !builder.getStreet().isBlank()) {
 	        where.append(" AND b.street LIKE ? ");
 	    }
-	    if (building.getFloorArea() != null) {
+	    if (builder.getFloorArea() != null) {
 	        where.append(" AND b.floorarea = ? ");
 	    }
-	    if (building.getNumberOfBasement() != null) {
+	    if (builder.getNumberOfBasement() != null) {
 	        where.append(" AND b.numberofbasement = ? ");
 	    }
-	    if (building.getDirection() != null && !building.getDirection().isBlank()) {
+	    if (builder.getDirection() != null && !builder.getDirection().isBlank()) {
 	        where.append(" AND b.direction LIKE ? ");
 	    }
-	    if (building.getLevel() != null && !building.getLevel().isBlank()) {
+	    if (builder.getLevel() != null && !builder.getLevel().isBlank()) {
 	        where.append(" AND b.level LIKE ? ");
 	    }
 
-	    if (building.getAreaF() != null) {
+	    if (builder.getAreaF() != null) {
 	        where.append(" AND ra.value >= ? ");
 	    }
-	    if (building.getAreaT() != null) {
+	    if (builder.getAreaT() != null) {
 	        where.append(" AND ra.value <= ? ");
 	    }
 
-	    if (building.getRentPriceF() != null) {
+	    if (builder.getRentPriceF() != null) {
 	        where.append(" AND b.rentprice >= ? ");
 	    }
-	    if (building.getRentPriceT() != null) {
+	    if (builder.getRentPriceT() != null) {
 	        where.append(" AND b.rentprice <= ? ");
 	    }
 
-	    if (building.getManagerName() != null && !building.getManagerName().isBlank()) {
+	    if (builder.getManagerName() != null && !builder.getManagerName().isBlank()) {
 	        where.append(" AND b.managername LIKE ? ");
 	    }
-	    if (building.getManagerPhone() != null && !building.getManagerPhone().isBlank()) {
+	    if (builder.getManagerPhone() != null && !builder.getManagerPhone().isBlank()) {
 	        where.append(" AND b.managerphone LIKE ? ");
 	    }
-	   	if (building.getStaffId() != null) {
+	   	if (builder.getStaffId() != null) {
             where.append(" AND ab.staffid = ? ");
         }
  
-        if (building.getRentType() != null && !building.getRentType().isEmpty()) {
+        if (builder.getRentTypes() != null && !builder.getRentTypes().isEmpty()) {
             where.append(" AND rt.code IN (");
-            for (int i = 0; i < building.getRentType().size(); i++) {
+            for (int i = 0; i < builder.getRentTypes().size(); i++) {
                 where.append("?");
-                if (i < building.getRentType().size() - 1) {
+                if (i < builder.getRentTypes().size() - 1) {
                     where.append(",");
                 }
             }
