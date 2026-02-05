@@ -94,7 +94,7 @@ public class BuildingRepoImpl implements BuildingRepoCustom {
 			join.append(" INNER JOIN rentarea ra ON ra.buildingid = b.id ");
 		}
 		if (builder.getStaffId() != null) {
-			join.append(" INNER JOIN assignmentbuilder ab ON ab.buildingid = b.id ");
+			join.append(" INNER JOIN assignmentbuilding ab ON ab.buildingid = b.id ");
 		}
 
 		if (builder.getRentTypes() != null && !builder.getRentTypes().isEmpty()) {
