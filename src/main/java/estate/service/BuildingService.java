@@ -77,6 +77,9 @@ public class BuildingService implements IBuildingService {
 		if (Validation.isValid(params.get("floorArea"))) {
 			building.setFloorArea(Integer.parseInt(params.get("floorArea")));
 		}
+		if(Validation.isValid(params.get("numberOfBasement"))) {
+			building.setNumberOfBasement(Integer.parseInt(params.get("numberOfBasement")));
+		}
 		if (typeCodes != null) {
 			building.setRentTypes(typeCodes);
 		}
