@@ -1,4 +1,5 @@
 package estate.repository.implement;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -114,7 +115,7 @@ public class BuildingRepoImpl implements BuildingRepo {
 		        join.append(" INNER JOIN rentarea ra ON ra.buildingid = b.id ");
 		    }
 		    if (builder.getStaffId() != null) {
-		        join.append(" INNER JOIN assignmentbuilder ab ON ab.buildingid = b.id ");
+		        join.append(" INNER JOIN assignmentbuilding ab ON ab.buildingid = b.id ");
 		    }
 
 		    if (builder.getRentTypes() != null && !builder.getRentTypes().isEmpty()) {
@@ -183,6 +184,38 @@ public class BuildingRepoImpl implements BuildingRepo {
             }
             where.append(") ");
         }
-        return where;
+//		Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
+//
+//	    for (Field field : fields) {
+//	        String fieldName = field.getName();
+//
+//	 
+//	        if (fieldName.equals("staffId")
+//	                || fieldName.equals("rentTypes")
+//	                || fieldName.startsWith("area")
+//	                || fieldName.startsWith("rentPrice")) {
+//	            continue;
+//	        }
+//
+//	        field.setAccessible(true);
+//
+//	        try {
+//	            Object value = field.get(builder);
+//	            if (value != null) {
+//	                if (field.getType().equals(String.class)) {
+//	                    where.append(" AND b.")
+//	                         .append(fieldName.toLowerCase())
+//	                         .append(" LIKE ? ");
+//	                } else {
+//	                    where.append(" AND b.")
+//	                         .append(fieldName.toLowerCase())
+//	                         .append(" = ? ");
+//	                }
+//	            }
+//	        } catch (Exception e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+	    return where;
 	}
 }

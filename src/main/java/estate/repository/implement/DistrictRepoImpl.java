@@ -14,7 +14,7 @@ import estate.util.ConnectionJDBC;
 public class DistrictRepoImpl implements DistrictRepo {
 	@Override
 	public District findDistrictById(Long districtId) {
-		String sql = "SELECT * FROM district WHERE district.id = ?";
+		String sql = "SELECT district.* FROM district WHERE district.id = ?";
 		District district = null;
 		try (
 			Connection cnn = ConnectionJDBC.getConnection();

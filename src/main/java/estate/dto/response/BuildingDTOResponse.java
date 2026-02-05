@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class BuildingDTOResponse {
+	Long id;
 	String buildingName;
 	String address; // street + ward (entity building) + district name (entity district)
 	Integer numberOfBasement; 
@@ -15,6 +16,12 @@ public class BuildingDTOResponse {
 	Integer rentPrice;
 	String serviceFee;
 	BigDecimal brokerageFee;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getBuildingName() {
 		return buildingName;
 	}

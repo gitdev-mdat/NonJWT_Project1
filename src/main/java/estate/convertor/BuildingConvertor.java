@@ -2,6 +2,7 @@ package estate.convertor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,12 @@ public class BuildingConvertor {
 			address.append(item.getStreet());
 		}
 		if (item.getWard() != null) {
-			if (address.length() > 0)
+			if (!address.isEmpty())
 				address.append(" ");
 			address.append(item.getWard());
 		}
 		if (district != null && district.getName() != null) {
-			if (address.length() > 0)
+			if (!address.isEmpty())
 				address.append(", ");
 			address.append(district.getName());
 		}
@@ -49,7 +50,8 @@ public class BuildingConvertor {
 		for (RentArea r : rentAreas) {
 			rent.add(r.getValue());
 		}
-		dto.setRentArea(rent.toString());
+		String rentString = rent.stream().map(s->s.toString()).collect(Collectors.joining(","));
+		dto.setRentArea(rentString);
 
 		if (item.getFloorArea() != null && rentAreas != null && !rentAreas.isEmpty()) {
 
@@ -62,13 +64,12 @@ public class BuildingConvertor {
 	}
 
 	public BuildingSearchBuilder convertToBuilder(BuildingDTORequest dto) {
-		BuildingSearchBuilder builder = new BuildingSearchBuilder.Builder().buildingName(dto.getBuildingName())
+		return new BuildingSearchBuilder.Builder().buildingName(dto.getBuildingName())
 				.areaF(dto.getAreaF()).areaT(dto.getAreaT()).direction(dto.getDirection())
 				.districtId(dto.getDistrictId()).floorArea(dto.getFloorArea()).level(dto.getLevel())
 				.managerName(dto.getManagerName()).managerPhone(dto.getManagerPhone()).rentPriceF(dto.getRentPriceF())
 				.rentPriceT(dto.getRentPriceT()).rentTypes(dto.getRentTypes())
 				.numberOfBasement(dto.getNumberOfBasement()).staffId(dto.getStaffId()).street(dto.getStreet())
 				.ward(dto.getWard()).build();
-		return builder;
 	}
 }
