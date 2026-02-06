@@ -2,6 +2,7 @@ package estate.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +36,7 @@ public class Building {
 	@Column
 	 String ward;
 	
-	@ManyToOne() 
+	@ManyToOne
 	@JoinColumn(name="districtid")
 	District district;
 	
@@ -122,5 +123,7 @@ public class Building {
 	
 	@Column(name="managerphonenumber")
 	String managerPhoneNumber;
-	 
+	
+	@OneToMany(mappedBy="building")
+	List<RentArea> rentAreas;
 }

@@ -27,7 +27,7 @@ public class BuildingConvertor {
 
 	public BuildingDTOResponse convertToResponseDTO(Building item) {
 		BuildingDTOResponse dto = modelMapper.map(item, BuildingDTOResponse.class);
-		District district = districtRepo.findDistrictById(item.getDistrict().getId());
+		District district = item.getDistrict();
 		StringBuilder address = new StringBuilder();
 		if (item.getStreet() != null) {
 			address.append(item.getStreet());
@@ -44,11 +44,12 @@ public class BuildingConvertor {
 		}
 		dto.setAddress(address.toString());
 
-		List<RentArea> rentAreas = rentAreaRepo.getRentAreasByBuildingId(item.getId());
+		List<RentArea> rentAreas = item.getRentAreas();
 		ArrayList<Integer> rent = new ArrayList<>();
 		for (RentArea r : rentAreas) {
 			rent.add(r.getValue());
 		}
+		
 		dto.setRentArea(rent.toString());
 
 		if (item.getFloorArea() != null && rentAreas != null && !rentAreas.isEmpty()) {
