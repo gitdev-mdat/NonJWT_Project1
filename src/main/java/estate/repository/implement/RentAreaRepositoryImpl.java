@@ -7,9 +7,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import estate.entity.RentArea;
-import estate.repository.interf.RentAreaRepo;
-public class RentAreaRepoImpl implements RentAreaRepo {
+import estate.repository.interf.RentAreaRepository;
+@Repository
+public class RentAreaRepositoryImpl implements RentAreaRepository {
 	private static final String USER = "root";
 	private static final String PASSWORD = "12345";
 	private static final String URL = "jdbc:mysql://localhost:3306/estatebasic";

@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import estate.dto.request.BuildingDTORequest;
 import estate.entity.Building;
-import estate.repository.interf.BuildingRepo;
+import estate.repository.interf.BuildingRepository;
 
-public class BuildingRepoImpl implements BuildingRepo {
+@Repository
+public class BuildingRepositoryImpl implements BuildingRepository {
 	private static final String USER = "root";
 	private static final String PASSWORD = "12345";
 	private static final String URL = "jdbc:mysql://localhost:3306/estatebasic";

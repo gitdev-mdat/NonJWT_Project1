@@ -2,6 +2,7 @@
 
 import java.sql.Connection;
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,62 +14,67 @@ import estate.dto.response.BuildingDTOResponse;
 import estate.entity.Building;
 import estate.entity.District;
 import estate.entity.RentArea;
-import estate.repository.implement.BuildingRepoImpl;
-import estate.repository.implement.DistrictRepoImpl;
-import estate.repository.implement.RentAreaRepoImpl;
-import estate.repository.interf.BuildingRepo;
-import estate.repository.interf.DistrictRepo;
-import estate.repository.interf.RentAreaRepo;
+import estate.repository.interf.BuildingRepository;
+import estate.repository.interf.DistrictRepository;
+import estate.repository.interf.RentAreaRepository;
 
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class BuildingService implements IBuildingService {	
-	private final BuildingRepo buildingRepo = new BuildingRepoImpl();
-	private final DistrictRepo districtRepo = new DistrictRepoImpl();
-	private final RentAreaRepo rentAreaRepo = new RentAreaRepoImpl();
+	@Autowired
+	private final BuildingRepository buildingRepo;
+	@Autowired
+	private final DistrictRepository districtRepo;
+	@Autowired
+	private final RentAreaRepository rentAreaRepo;
 	public List<BuildingDTOResponse> search(Map<String,String> params, List<String> typeCodes) {
 		// handle params
-		BuildingDTORequest building = new BuildingDTORequest();	
-
-	    building.setBuildingName(params.get("buildingName"));
-	    building.setWard(params.get("ward"));
-	    building.setStreet(params.get("street"));
-
-	    if (params.get("districtId") != null) {
-	        building.setDistrictId(Long.parseLong(params.get("districtId")));
-	    }
-
-	    if (params.get("areaF") != null) {
-	        building.setAreaF(Integer.parseInt(params.get("areaF")));
-	    }
-
-	    if (params.get("areaT") != null) {
-	        building.setAreaT(Integer.parseInt(params.get("areaT")));
-	    }
-
-	    if (params.get("rentPriceF") != null) {
-	        building.setRentPriceF(Integer.parseInt(params.get("rentPriceF")));
-	        System.out.println("RentPriceF: " + building.getRentPriceF());
-	    }
-
-	    if (params.get("rentPriceT") != null) {
-	        building.setRentPriceT(Integer.parseInt(params.get("rentPriceT")));
-	    }
-
-	    if (params.get("staffId") != null) {
-	        building.setStaffId(Long.parseLong(params.get("staffId")));
-	    }
-	    if (params.get("managerName") != null) {
-	    	building.setManagerName(params.get("managerName"));
-	    }
-	    if (params.get("managerPhone") != null) {
-	    	building.setManagerPhone(params.get("managerPhone"));
-	    }
-	    if (params.get("staffId") != null) {
-	    	building.setStaffId(Long.parseLong(params.get("staffId")));
-	    }
-	    if (typeCodes != null) {
-	    	building.setRentType(typeCodes);
-	    }
+//		BuildingDTORequest building = new BuildingDTORequest();	
+//
+//	    building.setBuildingName(params.get("buildingName"));
+//	    building.setWard(params.get("ward"));
+//	    building.setStreet(params.get("street"));
+//
+//	    if (params.get("districtId") != null) {
+//	        building.setDistrictId(Long.parseLong(params.get("districtId")));
+//	    }
+//
+//	    if (params.get("areaF") != null) {
+//	        building.setAreaF(Integer.parseInt(params.get("areaF")));
+//	    }
+//
+//	    if (params.get("areaT") != null) {
+//	        building.setAreaT(Integer.parseInt(params.get("areaT")));
+//	    }
+//
+//	    if (params.get("rentPriceF") != null) {
+//	        building.setRentPriceF(Integer.parseInt(params.get("rentPriceF")));
+//	        System.out.println("RentPriceF: " + building.getRentPriceF());
+//	    }
+//
+//	    if (params.get("rentPriceT") != null) {
+//	        building.setRentPriceT(Integer.parseInt(params.get("rentPriceT")));
+//	    }
+//
+//	    if (params.get("staffId") != null) {
+//	        building.setStaffId(Long.parseLong(params.get("staffId")));
+//	    }
+//	    if (params.get("managerName") != null) {
+//	    	building.setManagerName(params.get("managerName"));
+//	    }
+//	    if (params.get("managerPhone") != null) {
+//	    	building.setManagerPhone(params.get("managerPhone"));
+//	    }
+//	    if (params.get("staffId") != null) {
+//	    	building.setStaffId(Long.parseLong(params.get("staffId")));
+//	    }
+//	    if (typeCodes != null) {
+//	    	building.setRentType(typeCodes);
+//	    }
 		//-----
 		List<Building> b = buildingRepo.search(building);
 		List<BuildingDTOResponse> result = new ArrayList<>();

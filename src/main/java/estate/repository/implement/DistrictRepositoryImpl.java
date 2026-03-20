@@ -3,12 +3,16 @@ package estate.repository.implement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 
 import estate.entity.District;
-import estate.repository.interf.DistrictRepo;
+import estate.repository.interf.DistrictRepository;
 
-public class DistrictRepoImpl implements DistrictRepo {
+@Repository
+public class DistrictRepositoryImpl implements DistrictRepository {
 	private static final String USER = "root";
 	private static final String PASSWORD = "12345";
 	private static final String URL = "jdbc:mysql://localhost:3306/estatebasic";
