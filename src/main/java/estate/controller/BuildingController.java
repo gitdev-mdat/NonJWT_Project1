@@ -20,4 +20,5 @@ public class BuildingController {
 		List<BuildingDTOResponse> building = buildingService.search(params,typeCodes);
 		return building;
 	}
+	
 } 

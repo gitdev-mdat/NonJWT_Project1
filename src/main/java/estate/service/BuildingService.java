@@ -38,9 +38,15 @@ public class BuildingService implements IBuildingService {
 		// handle params
 		BuildingDTORequest building = new BuildingDTORequest();	
 
-	    building.setBuildingName(params.get("buildingName"));
-	    building.setWard(params.get("ward"));
-	    building.setStreet(params.get("street"));
+		if (Validation.isValid(params.get("buildingName"))) {
+			building.setBuildingName(params.get("buildingName"));
+		}
+		if (Validation.isValid(params.get("ward"))) {
+		    building.setWard(params.get("ward"));
+		}
+	    if (Validation.isValid(params.get("street"))) {
+	    	building.setStreet(params.get("street"));
+	    }
 
 	    if (Validation.isValid(params.get("districtId"))) {
 	        building.setDistrictId(Long.parseLong(params.get("districtId")));
@@ -83,10 +89,10 @@ public class BuildingService implements IBuildingService {
 		List<Building> b = buildingRepo.search(builder);
 		List<BuildingDTOResponse> result = new ArrayList<>();
 		for (Building item : b) {
-		
 			BuildingDTOResponse dto= buildingConvertor.convertToResponseDTO(item);
 			result.add(dto);
 		}
 		return result;
 	}
+	
 }
