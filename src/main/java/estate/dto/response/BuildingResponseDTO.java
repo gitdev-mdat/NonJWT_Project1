@@ -3,7 +3,10 @@ package estate.dto.response;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class BuildingDTOResponse {
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+public class BuildingResponseDTO {
+	String buildingId;
 	String buildingName;
 	String address; // street + ward (entity building) + district name (entity district)
 	Integer numberOfBasement; 
@@ -15,6 +18,12 @@ public class BuildingDTOResponse {
 	Integer rentPrice;
 	String serviceFee;
 	BigDecimal brokerageFee;
+	public String getBuildingId() {
+		return buildingId;
+	}
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
 	public String getBuildingName() {
 		return buildingName;
 	}

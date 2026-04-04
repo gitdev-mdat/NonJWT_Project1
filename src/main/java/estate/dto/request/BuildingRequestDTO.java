@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingDTORequest {
+public class BuildingRequestDTO {
 	String buildingName; // entity Building
 	String ward ; // ____ 
 	Long districtId;

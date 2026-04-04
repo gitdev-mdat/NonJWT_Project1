@@ -1,6 +1,8 @@
 package estate.entity;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ public class RentArea {
 	
 	@ManyToOne
 	@JoinColumn(name="buildingid")
+	@JsonBackReference
 	Building building;
 	
 	@Column
@@ -42,3 +45,4 @@ public class RentArea {
 	@Column(name="modifieddate")
 	LocalDateTime modifiedDate;
 }
+	

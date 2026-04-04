@@ -3,6 +3,7 @@
 import java.sql.Connection;
 
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,11 +12,14 @@ import java.util.List;
 
 import estate.builder.BuildingSearchBuilder;
 import estate.convertor.BuildingConvertor;
-import estate.dto.request.BuildingDTORequest;
-import estate.dto.response.BuildingDTOResponse;
+import estate.dto.request.BuildingCreateRequestDTO;
+import estate.dto.request.BuildingRequestDTO;
+import estate.dto.request.BuildingUpdateRequestDTO;
+import estate.dto.response.BuildingResponseDTO;
 import estate.entity.Building;
 import estate.entity.District;
 import estate.entity.RentArea;
+import estate.exception.InvalidBuildingDTOException;
 import estate.repository.implement.BuildingRepoImpl;
 import estate.repository.implement.DistrictRepoImpl;
 import estate.repository.implement.RentAreaRepoImpl;
@@ -23,6 +27,9 @@ import estate.repository.interf.BuildingRepo;
 import estate.repository.interf.DistrictRepo;
 import estate.repository.interf.RentAreaRepo;
 import estate.util.Validation;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 import java.util.Map;
 
@@ -34,9 +41,13 @@ public class BuildingService implements IBuildingService {
 	private BuildingRepo buildingRepo;
 	@Autowired
 	private BuildingConvertor buildingConvertor;
-	public List<BuildingDTOResponse> search(Map<String,String> params, List<String> typeCodes) {
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	
+	public List<BuildingResponseDTO> search(Map<String,String> params, List<String> typeCodes) {
 		// handle params
-		BuildingDTORequest building = new BuildingDTORequest();	
+		BuildingRequestDTO building = new BuildingRequestDTO();	
 		if (Validation.isValid(params.get("buildingName"))) {
 			building.setBuildingName(params.get("buildingName"));
 		}
@@ -95,12 +106,42 @@ public class BuildingService implements IBuildingService {
 		
 	    BuildingSearchBuilder builder = buildingConvertor.convertToBuilder(building);
 		List<Building> b = buildingRepo.search(builder);
-		List<BuildingDTOResponse> result = new ArrayList<>();
+		List<BuildingResponseDTO> result = new ArrayList<>();
 		for (Building item : b) {
 		
-			BuildingDTOResponse dto= buildingConvertor.convertToResponseDTO(item);
+			BuildingResponseDTO dto= buildingConvertor.convertToResponseDTO(item);
 			result.add(dto);
 		}
 		return result;
+	}
+	@Override
+	@Transactional
+	public Building create(BuildingCreateRequestDTO building) {
+		if (!Validation.isValid(building.getName())) {
+			throw new InvalidBuildingDTOException("thiếu tên toà nhà");
+		}
+		if (building.getRentPrice() == null || building.getRentPrice() <= 0) {
+			throw new InvalidBuildingDTOException("giá thuê không hợp lệ");
+		}
+		Building b =  buildingConvertor.convertToEntity(building);
+		return b;
+	}
+	@Override
+	@Transactional
+	public Building update(BuildingUpdateRequestDTO building) {
+		Building b = buildingConvertor.updateToEntity(building);
+		entityManager.merge(b); // update entity
+		return b;
+	}
+	@Override
+	@Transactional
+	public void delete(List<Long> ids) {
+		for (Long i : ids) {
+			Building building = entityManager.find(Building.class, i);
+			if (building != null) {
+				entityManager.createQuery("DELETE FROM RentArea ra WHERE ra.building.id = " + i).executeUpdate();
+				entityManager.remove(building);
+			}
+		}
 	}
 }

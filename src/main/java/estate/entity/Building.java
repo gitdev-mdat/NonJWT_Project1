@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +25,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name="building")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Building {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -125,5 +129,6 @@ public class Building {
 	String managerPhoneNumber;
 	
 	@OneToMany(mappedBy="building")
+	@JsonManagedReference
 	List<RentArea> rentAreas;
 }

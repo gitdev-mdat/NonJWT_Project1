@@ -11,7 +11,7 @@ public class ModelMapperConfig {
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setSkipNullEnabled(true);
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT); // cấu hình chế độ khớp chặt chẽ
 		return modelMapper;
 	}
 }
